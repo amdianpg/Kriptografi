@@ -232,9 +232,12 @@ def main():
 
     if uploaded_file is not None:
         try:
-            sbox = load_sbox(uploaded_file)
+            df = pd.read_excel(uploaded_file, header=None)
             st.subheader("📤 Uploaded S-Box Matrix")
-            st.dataframe(pd.DataFrame(sbox))
+            st.dataframe(df)
+
+            #Konversi Dataframe ke list
+            sbox = df.values.flatten().tolist()
 
             result = []
             for metric_name in selected_metrics:
@@ -246,8 +249,10 @@ def main():
                 })
 
             st.subheader("📊 The Results")
-            results_df = pd.DataFrame(result)
-            st.dataframe(results_df.style.format({"Value": "{:.6f}"}))
+                results_df = pd.DataFrame(result)
+                st.dataframe(results_df.style.format({"Value": "{:.6f}"}))
+                use_container_width=True, 
+                height=400
 
         
             # Export as CSV or Excel
